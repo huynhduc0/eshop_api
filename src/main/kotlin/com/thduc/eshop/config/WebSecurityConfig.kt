@@ -8,15 +8,11 @@ import org.springframework.context.annotation.Configuration
 import org.springframework.http.HttpMethod
 import org.springframework.security.authentication.dao.DaoAuthenticationProvider
 import org.springframework.security.config.annotation.authentication.builders.AuthenticationManagerBuilder
-import org.springframework.security.config.annotation.method.configuration.EnableGlobalMethodSecurity
 import org.springframework.security.config.annotation.web.builders.HttpSecurity
 import org.springframework.security.config.annotation.web.configuration.WebSecurityConfigurerAdapter
 import org.springframework.security.config.http.SessionCreationPolicy
-import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder
 import org.springframework.security.crypto.password.PasswordEncoder
-import org.springframework.security.web.AuthenticationEntryPoint
 import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter
-import org.springframework.security.web.authentication.www.BasicAuthenticationFilter
 import org.springframework.web.cors.CorsConfiguration
 import org.springframework.web.cors.CorsConfigurationSource
 import org.springframework.web.cors.UrlBasedCorsConfigurationSource
@@ -31,35 +27,21 @@ class WebSecurityConfig(
 ): WebSecurityConfigurerAdapter() {
     override fun configure(http: HttpSecurity?) {
 //        super.configure(http)
-//        http!!
-//            .cors().and()
-//            .csrf().disable()
-//            .sessionManagement().sessionCreationPolicy(SessionCreationPolicy.STATELESS) // no sessions
-//            .and()
-//            .authorizeRequests()
-////            .antMatchers("/api/**").permitAll()
-////            .antMatchers("/error/**").permitAll()
-//            .antMatchers(HttpMethod.POST, "/users/register").permitAll()
-//            .antMatchers(HttpMethod.POST, "/users/login").permitAll()
-//            .anyRequest().authenticated()
-//            .and()
-//            .addFilterBefore(JWTAuthenticationFilter(authenticationManager(), securityProperty,userService), UsernamePasswordAuthenticationFilter::class.java)
-////            .exceptionHandling().accessDeniedHandler().authenticationEntryPoint(AuthenticationEntryPoint())
-////            .addFilter(JWTAuthorizationFilter(authenticationManager(), securityProperty))
         http!!
             .cors().and()
             .csrf().disable()
+            .sessionManagement().sessionCreationPolicy(SessionCreationPolicy.STATELESS) // no sessions
+            .and()
             .authorizeRequests()
-            .antMatchers("/users/login").permitAll()
-            .antMatchers("/google").permitAll()
-            .antMatchers("/register").permitAll()
-            .antMatchers("/img/*/*").permitAll()
+//            .antMatchers("/api/**").permitAll()
+//            .antMatchers("/error/**").permitAll()
+            .antMatchers(HttpMethod.POST, "/users/register").permitAll()
+            .antMatchers(HttpMethod.POST, "/users/login").permitAll()
             .anyRequest().authenticated()
             .and()
-            .sessionManagement().sessionCreationPolicy(SessionCreationPolicy.STATELESS)
-            .and()
+            .addFilter(JWTAuthorizationFilter(authenticationManager(), securityProperty,userService))
             .addFilter(JWTAuthenticationFilter(authenticationManager(), securityProperty,userService))
-            .addFilter(JWTAuthorizationFilter(authenticationManager(),securityProperty))
+//            .addFilterBefore(JWTAuthenticationFilter(authenticationManager(), securityProperty,userService),UsernamePasswordAuthenticationFilter::class.java)
     }
     @Throws(Exception::class)
     override fun configure(auth: AuthenticationManagerBuilder) {

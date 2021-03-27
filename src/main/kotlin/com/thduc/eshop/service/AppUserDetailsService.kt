@@ -19,7 +19,7 @@ class AppUserDetailsService(private val userRepository: UserRepository) : UserDe
         val user = userRepository.findByUsername(s)
         if(user === null) throw DataNotFoundException("user","user",s)
         val authorities = ArrayList<GrantedAuthority>()
-        user.roles!!.forEach { authorities.add(SimpleGrantedAuthority(it.roleName)) }
+        user.roles!!.forEach { authorities.add(SimpleGrantedAuthority("ROLE_"+it.roleName)) }
         return User(
             user.username,
 //            user.password,

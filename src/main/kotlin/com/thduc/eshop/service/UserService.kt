@@ -20,6 +20,13 @@ import org.springframework.transaction.annotation.Transactional
 import org.springframework.web.bind.annotation.PostMapping
 import java.util.*
 import java.util.stream.Collectors
+import org.springframework.security.core.authority.SimpleGrantedAuthority
+import org.springframework.security.core.userdetails.UserDetails
+
+import java.util.ArrayList
+
+
+
 
 @Service
 class UserService(
@@ -55,15 +62,21 @@ class UserService(
     @Throws(DataNotFoundException::class)
     fun login(userForm: UserForm): UserResponse {
         val user: User = userRepository.findByUsername(username = userForm.username)
-//        if (user!=null) return UserResponse("hi",user)
-        val authorities: String = appUserDetailsService.loadUserByUsername(userForm.username).authorities.stream()
-            .map(GrantedAuthority::getAuthority)
-            .collect(Collectors.joining(","));
+////        if (user!=null) return UserResponse("hi",user)
+//        val authorities: MutableList<SimpleGrantedAuthority> = ArrayList()
+//        user.roles!!.forEach { role -> authorities.add(SimpleGrantedAuthority(role.roleName)) }
+//        val authorString: String? = authorities.stream()
+//            .map(GrantedAuthority::getAuthority)
+//            .collect(Collectors.joining(","));
+////        val authorities: String = appUserDetailsService.loadUserByUsername(userForm.username).authorities.stream()
+////            .map(GrantedAuthority::getAuthority)
+////            .collect(Collectors.joining(","))
+        val userDetails: UserDetails = appUserDetailsService.loadUserByUsername(userForm.username)
         val calendar = Calendar.getInstance()
         calendar.add(Calendar.DAY_OF_YEAR, securityProperty.expirationTime)
         val token = Jwts.builder()
             .setSubject(userForm.username)
-            .claim("auth", authorities)
+            .claim("auth", userDetails.authorities)
             .setExpiration(calendar.time)
             .signWith(Keys.hmacShaKeyFor(securityProperty.secret.toByteArray()), SignatureAlgorithm.HS256)
             .compact()
