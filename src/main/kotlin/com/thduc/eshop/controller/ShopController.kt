@@ -22,7 +22,6 @@ class ShopController(
     }
     @PostMapping()
     fun setSop(@RequestBody shop: Shop,@ActiveUser userPrincipal: UserPrincipal):Shop{
-
         return shopService.saveShop(userPrincipal.getUser()!!,shop)
     }
     @PutMapping()

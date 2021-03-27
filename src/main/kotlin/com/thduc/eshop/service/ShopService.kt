@@ -13,9 +13,7 @@ class ShopService(
     @Autowired val shopRepository: ShopRepository
 ) : ShopServiceImpl {
     fun findShopByUser(user: User?): Shop {
-
-        return if (shopRepository.findTopByCreatedBy(user!!) == null) Shop(1, null, user)
-        else shopRepository.findTopByCreatedBy(user!!)
+        return shopRepository.findTopByCreatedBy(user!!)
     }
 
     fun saveShop(user: User, shop: Shop): Shop {
