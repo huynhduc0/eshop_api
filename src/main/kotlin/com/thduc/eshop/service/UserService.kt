@@ -41,6 +41,7 @@ class UserService(
             username = userForm.username,
             fullname = userForm.fullname,
             phoneNumber = userForm.phoneNumber,
+            email = userForm.email
         )
 //        user = userRepository.save(user)
         user.roles = if (userForm.isShop!!) setOf(roleService.findRoleByRoleName("MERCHANT")) else

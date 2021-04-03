@@ -17,12 +17,13 @@ data class User(
     var phoneNumber: String? = null,
     var gender: GenderType? = GenderType.HIDE,
     var avatar: String? = null,
+    var email: String? = null,
     @ManyToMany(cascade = [CascadeType.ALL],fetch = FetchType.EAGER)
     var roles: Set<Role>? = null,
     var status: StatusType? = StatusType.ACTIVATE,
     var dateOfBirth: Date? = null
 ) {
     constructor(): this(null,null,null,null,null,null,null,null,null,null
-    ,null)
+    ,null,null)
 
 }
