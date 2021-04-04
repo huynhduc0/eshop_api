@@ -1,5 +1,6 @@
 package com.thduc.eshop.service
 
+import com.thduc.eshop.constant.StatusType
 import com.thduc.eshop.constant.UploadType
 import com.thduc.eshop.entity.Media
 import com.thduc.eshop.entity.Product
@@ -24,6 +25,9 @@ class ProductService(
 ) : ProductServiceImpl {
     override fun loadProductByUser(user: User, pageable: Pageable): Page<Product> {
         return productRepository.findAll(pageable)
+    }
+    override fun loadUserProduct(user: User,pageable: Pageable): Page<Product> {
+        return productRepository.findAllByStatus(StatusType.ACTIVATE,pageable)
     }
 
     override fun addProduct(productForm: ProductForm, user: User): Product {

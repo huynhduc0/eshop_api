@@ -14,11 +14,11 @@ import org.springframework.security.access.prepost.PreAuthorize
 import org.springframework.web.bind.annotation.*
 
 @RestController
-@PreAuthorize("hasRole('ROLE_ADMIN')")
 @RequestMapping("categories")
 class CategoryController(
     @Autowired val categoryService: CategoryService
 ) {
+    @PreAuthorize("hasRole('ROLE_ADMIN')")
     @GetMapping
     fun getAllCategory(
         @RequestParam(value = "page",defaultValue = "0")  page: Int,
