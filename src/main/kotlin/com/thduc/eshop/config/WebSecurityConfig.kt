@@ -39,6 +39,7 @@ class WebSecurityConfig(
             .antMatchers(HttpMethod.POST, "/users/register").permitAll()
             .antMatchers(HttpMethod.POST, "/users/login").permitAll()
             .antMatchers(HttpMethod.POST, "/users/google").permitAll()
+            .antMatchers(HttpMethod.GET, "/media/**").permitAll()
             .anyRequest().authenticated()
             .and()
             .addFilter(JWTAuthorizationFilter(authenticationManager(), securityProperty,userService))

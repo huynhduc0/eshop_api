@@ -1,7 +1,6 @@
 package com.thduc.eshop.utilities
 
 
-import com.thduc.eshop.constant.UploadConstant
 import com.thduc.eshop.constant.UploadType
 import com.thduc.eshop.entity.Media
 import com.thduc.eshop.entity.User
@@ -16,6 +15,16 @@ import org.springframework.web.multipart.MultipartFile;
 import java.io.File
 import java.nio.file.*
 import java.util.stream.Stream
+import org.springframework.http.ResponseEntity
+
+import java.io.FileInputStream
+
+import com.thduc.eshop.exception.DataNotFoundException
+
+import com.thduc.eshop.constant.UploadConstant
+import org.springframework.http.MediaType
+import java.io.IOException
+
 
 @Component
 class FileUtil {
@@ -58,5 +67,24 @@ class FileUtil {
         return Files.walk(this.rootLocation, 1)
             .filter { path -> !path.equals(this.rootLocation) }
             .map(this.rootLocation::relativize)
+    }
+
+    @Throws(IOException::class)
+    fun loadImage(folder: String?, filename: String): ResponseEntity<ByteArray?>? {
+        val path = Paths.get(UploadConstant.UPLOAD_PATH, folder, filename)
+        val file = File(path.toString())
+        if (!file.exists()) {
+            throw DataNotFoundException("File", "path", file.absolutePath)
+        }
+        val resource = FileInputStream(file)
+        val fileData = ByteArray(file.length().toInt())
+        resource.read(fileData)
+        resource.close()
+        if (filename.endsWith(".png")) {
+            return ResponseEntity.ok().contentType(MediaType.IMAGE_PNG).body(fileData)
+        } else if (filename.endsWith("jpg") || filename.endsWith("jpeg")) {
+            return ResponseEntity.ok().contentType(MediaType.IMAGE_JPEG).body(fileData)
+        }
+        return null
     }
 }
