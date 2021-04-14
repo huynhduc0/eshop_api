@@ -5,5 +5,6 @@ import org.springframework.stereotype.Component
 
 @Component
 object UploadConstant {
-    val UPLOAD_PATH =  "~/eshop/src/main/resources/static/uploads/"
+//    const val UPLOAD_PATH =  "~/eshop/src/main/resources/static/uploads/"
+ val UPLOAD_PATH =  System.getProperty("user.dir")+ "/src/main/resources/static/uploads/"
 }

@@ -33,3 +33,4 @@ build/
 .vscode/
 #upload path:
 src/main/kotlin/com/thduc/eshop/constant/UploadConstant.kt
+*.properties
