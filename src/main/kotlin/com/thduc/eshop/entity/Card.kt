@@ -10,7 +10,7 @@ class Card(
     @Id @GeneratedValue(strategy = GenerationType.IDENTITY) var id:Long? =null,
     var cardHolder: String? = null,
     var cardNumber: String? = null,
-    var validThrough: Date? = null,
+    var validThrough: String? = null,
     @OneToOne var user: User?= null,
     var defaultCard: Boolean? = false,
 ) {
