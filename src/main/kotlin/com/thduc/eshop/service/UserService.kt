@@ -160,7 +160,7 @@ class UserService(
 
         return when (platform) {
             OSType.WEB -> "213239061541-lhm7o6vso9gsu58lvfv31svmj4bio7tf.apps.googleusercontent.com"
-            OSType.IOS -> "213239061541-5072nudrlf2dpu7qdlvaub2vuvjg4m4f.apps.googleusercontent.com"
+            OSType.IOS -> "213239061541-4aaq1mirj2m41j9rmemvmi4hu9d2bo6m.apps.googleusercontent.com"
             else -> "nothing"
         }
     }
