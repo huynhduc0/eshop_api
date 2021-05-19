@@ -1,5 +1,6 @@
 package com.thduc.eshop.entity
 
+import com.thduc.eshop.constant.StatusType
 import com.thduc.eshop.entity.*
 import javax.persistence.*
 
@@ -16,7 +17,8 @@ class Orders(
   @OneToOne
     var shippingAddress: Address?,
    @OneToOne
-    var shop: Shop? = null
+    var shop: Shop? = null,
+    var status: StatusType? = StatusType.NEW
 ) {
     constructor(): this(null,null,null,null,null,null)
 }

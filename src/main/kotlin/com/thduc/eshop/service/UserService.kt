@@ -20,6 +20,8 @@ import io.jsonwebtoken.Jwts
 import io.jsonwebtoken.SignatureAlgorithm
 import io.jsonwebtoken.security.Keys
 import org.springframework.beans.factory.annotation.Autowired
+import org.springframework.data.domain.Page
+import org.springframework.data.domain.PageRequest
 import org.springframework.security.core.userdetails.UserDetails
 import org.springframework.security.crypto.password.PasswordEncoder
 import org.springframework.stereotype.Service
@@ -166,4 +168,9 @@ class UserService(
             else -> "nothing"
         }
     }
+
+    override fun getAllUser(currentUser: User, of: PageRequest): Page<User> {
+        return userRepository.findAllByIdNot(currentUser.id!!,of)
+    }
+
 }

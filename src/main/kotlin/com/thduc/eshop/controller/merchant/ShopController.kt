@@ -40,4 +40,5 @@ class ShopController(
     fun deleteShop(@ActiveUser userPrincipal: UserPrincipal): SuccessActionResponse{
         return shopService.deleteShop(userPrincipal.currentUser!!)
     }
+
 }

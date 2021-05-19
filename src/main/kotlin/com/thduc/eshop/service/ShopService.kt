@@ -7,6 +7,8 @@ import com.thduc.eshop.repository.ShopRepository
 import com.thduc.eshop.request.SuccessActionResponse
 import com.thduc.eshop.service.ServiceImpl.ShopServiceImpl
 import org.springframework.beans.factory.annotation.Autowired
+import org.springframework.data.domain.Page
+import org.springframework.data.domain.PageRequest
 import org.springframework.stereotype.Service
 
 @Service
@@ -32,5 +34,9 @@ class ShopService(
         val shop: Shop = shopRepository.findTopByUser(user)
         shopRepository.delete(shop)
         return SuccessActionResponse("delete",true)
+    }
+
+    fun getAllShop(currentUser: User, of: PageRequest): Page<Shop> {
+        return shopRepository.findAll(of)
     }
 }
