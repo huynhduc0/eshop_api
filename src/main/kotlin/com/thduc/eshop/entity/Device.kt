@@ -9,7 +9,7 @@ data class Device(
     var id: Long? = null,
     var deviceId: String? = null,
     var jwtToken:String? =null,
-    var push_token:String? = null,
+    var pushToken:String? = null,
     var os: OSType = OSType.WEB,
     @OneToOne var user: User? = null,
 ) {

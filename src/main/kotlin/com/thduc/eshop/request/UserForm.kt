@@ -14,6 +14,9 @@ class UserForm(
     var isShop: Boolean? = null,
     var oAuthToken: String? = null,
     var platform:OSType? = null,
-    var email:String? = null
+    var email:String? = null,
+    var deviceId:String? = null,
+    var pushToken:String? = null,
+    var osType: OSType,
 ) {
 }

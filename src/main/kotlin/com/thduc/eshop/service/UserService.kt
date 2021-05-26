@@ -35,6 +35,7 @@ class UserService(
     @Autowired val passwordEncoder: PasswordEncoder,
     @Autowired val appUserDetailsService: AppUserDetailsService,
     @Autowired val securityProperty: SecurityProperty,
+    @Autowired val deviceService: DeviceService,
     val fileUtil: FileUtil,
     val roleService: RoleService
 ) : UserServiceImpl {
@@ -46,7 +47,6 @@ class UserService(
             phoneNumber = userForm.phoneNumber,
             email = userForm.email
         )
-//        user = userRepository.save(user)
         user.roles = if (userForm.isShop!!) setOf(roleService.findRoleByRoleName("MERCHANT")) else
             setOf(roleService.findRoleByRoleName("USER"))
         user.avatar = fileUtil.store(user.username!!, user, userForm.avatar, UploadType.AVATAR).mediaPath
@@ -70,16 +70,9 @@ class UserService(
             ?: throw BadRequestException("Wrong username or password")
         if (!passwordEncoder.matches(userForm.password, user.password))
             throw BadRequestException("Wrong username or password")
-        ////        if (user!=null) return UserResponse("hi",user)
-//        val authorities: MutableList<SimpleGrantedAuthority> = ArrayList()
-//        user.roles!!.forEach { role -> authorities.add(SimpleGrantedAuthority(role.roleName)) }
-//        val authorString: String? = authorities.stream()
-//            .map(GrantedAuthority::getAuthority)
-//            .collect(Collectors.joining(","));
-////        val authorities: String = appUserDetailsService.loadUserByUsername(userForm.username).authorities.stream()
-////            .map(GrantedAuthority::getAuthority)
-////            .collect(Collectors.joining(","))
         val token = generateToken(userForm.username!!)
+
+        deviceService.refreshToken(userForm.pushToken!!,userForm.osType,userForm.deviceId!!,user)
         return if (token.isNullOrEmpty()) throw DataNotFoundException("user", "user", "username") else UserResponse(
             token,
             user

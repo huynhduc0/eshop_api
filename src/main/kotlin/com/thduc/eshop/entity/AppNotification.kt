@@ -5,18 +5,16 @@ import java.util.*
 import javax.persistence.*
 
 @Entity
-data class Notification(
+data class AppNotification(
     @Id @GeneratedValue(strategy = GenerationType.IDENTITY)
     var id: Long? = null,
     var title: String?,
-    var content:String?,
-    @OneToOne
-    var device: Device?,
+    var message:String?,
     var seenDate: Date?=null,
     var seen: Boolean = false,
     var notificationType: NotificationType?,
-//    var fromUser: User,
+    var image:String? = null,
     @OneToOne var toUser: User?,
 ) {
-    constructor(): this(null,null,null,null,null,false,null,null)
+    constructor(): this(null,null,null,null,false,null,null,null)
 }
