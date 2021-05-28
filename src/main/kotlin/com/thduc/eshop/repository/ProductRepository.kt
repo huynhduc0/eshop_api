@@ -1,6 +1,7 @@
 package com.thduc.eshop.repository
 
 import com.thduc.eshop.constant.StatusType
+import com.thduc.eshop.entity.Category
 import com.thduc.eshop.entity.Product
 import org.springframework.data.domain.Page
 import org.springframework.data.domain.Pageable
@@ -15,6 +16,9 @@ import org.springframework.data.repository.query.Param
 @Repository
 interface ProductRepository: PagingAndSortingRepository<Product, Long> {
     fun findAllByStatus(statusType: StatusType,pageable: Pageable): Page<Product>
+    fun findAllByCategoriesContains(category: Category,pageable: Pageable):Page<Product>
+    fun findAllByCategoriesContainsAndNameContainingOrShop_NameContaining(category: Category,name:String,sName:String,pageable: Pageable):Page<Product>
+    fun findAllByNameContainingOrShop_NameContaining(name:String,sName:String,pageable: Pageable):Page<Product>
     @Query("SELECT p.* FROM product as p LEFT JOIN (SELECT * FROM recommend where user_id = :id ) as r " +
             "on p.id = r.product_id where p.status= 0 order by r.num desc"
     ,nativeQuery = true,countQuery = "SELECT p FROM product as p where p.status= 0 ")

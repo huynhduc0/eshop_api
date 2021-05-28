@@ -18,12 +18,24 @@ import org.springframework.stereotype.Service
 class ProductService(
     @Autowired val productRepository: ProductRepository,
     @Autowired val shopService: ShopService,
+    @Autowired val categoryService: CategoryService,
     @Autowired val productOptionRepository: ProductOptionRepository,
     @Autowired val fileUtil: FileUtil
 ) : ProductServiceImpl {
     override fun loadProductByUser(user: User, pageable: Pageable): Page<Product> {
         return productRepository.findAll(pageable)
     }
+
+    override fun loadProductByUser(user: User, pageable: Pageable, categoryId: String, search: String): Page<Product> {
+        return if(search =="") productRepository.findAllByCategoriesContains(categoryService.getCategory(categoryId.toLong()),pageable)
+        else productRepository.findAllByCategoriesContainsAndNameContainingOrShop_NameContaining(categoryService.getCategory(categoryId.toLong()),search,search,pageable)
+    }
+
+    override fun loadProductByUser(currentUser: User, pageable: Pageable, search: String): Page<Product> {
+        return if(search =="") productRepository.findAllByStatus(StatusType.ACTIVATE,pageable)
+        else productRepository.findAllByNameContainingOrShop_NameContaining(search,search,pageable)
+    }
+
     override fun loadRecomendProduct(user: User, pageable: Pageable): Page<Product> {
         return productRepository.findAllRecommendByStatus(user.id!!,pageable)
     }
