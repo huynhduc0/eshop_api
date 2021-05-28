@@ -47,4 +47,7 @@ class CategoryService(
         category.id = old.id
         return categoryRepository.save(category)
     }
+    fun allActive():Set<Category>{
+        return categoryRepository.findAll().toSet()
+    }
 }
