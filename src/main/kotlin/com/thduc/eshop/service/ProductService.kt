@@ -45,7 +45,7 @@ class ProductService(
     fun loadRelativeProduct(id:Long,currentUser: User, of: Pageable):Page<Product>{
         val ids = productRepository.getCartIds(currentUser.id!!)
         val product = productRepository.findById(id).orElseThrow { DataNotFoundException("product","id",id.toString()) }
-        return productRepository.findAllByStatusExceptAndCategories(product.categories!!.first()!!.id!!,ids,of)
+        return productRepository.findAllByStatusExceptAndCategories(id,product.categories!!.first()!!.id!!,ids,of)
     }
 
     fun loadRelativeProduct(currentUser: User, of: Pageable):Page<Product>{

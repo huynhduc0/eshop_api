@@ -1,25 +1,24 @@
 package com.thduc.eshop.service
 
+
 import com.google.auth.oauth2.GoogleCredentials
 import com.google.firebase.FirebaseApp
 import com.google.firebase.FirebaseOptions
+import com.google.firebase.messaging.*
+import com.thduc.eshop.constant.UploadConstant.SERVER_PATH
 import org.springframework.stereotype.Service
 import org.springframework.core.io.ClassPathResource
 
-import com.google.firebase.messaging.FirebaseMessaging;
-import com.google.firebase.messaging.FirebaseMessagingException;
-import com.google.firebase.messaging.Message;
-import com.google.firebase.messaging.Notification
-import com.thduc.eshop.constant.UploadConstant
-import com.thduc.eshop.constant.UploadConstant.SERVER_PATH
 import com.thduc.eshop.entity.AppNotification
 import com.thduc.eshop.repository.DeviceRepository
 import org.slf4j.LoggerFactory
 import org.springframework.beans.factory.annotation.Autowired
+import java.io.FileInputStream
 
 
 import javax.annotation.PostConstruct
 import java.io.IOException
+
 
 
 @Service
@@ -66,7 +65,10 @@ class FCMPushService(
     fun sendPnsToDevice(notifications: AppNotification): Boolean {
         val devices = deviceRepository.findAllByUser(notifications.toUser!!)
         devices!!.forEach { tokens ->
-            val message: Message? = Message.builder()
+
+            val message: Message? = Message.builder().setApnsConfig(
+                ApnsConfig.builder().setAps(Aps.builder().setThreadId("j").setCategory("j vip").setAlert("test").setBadge(1).build()).build()
+            )
                 .setToken(tokens.pushToken)
                 .setNotification(
                     Notification.builder().

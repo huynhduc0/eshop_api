@@ -28,6 +28,12 @@
             <groupId>com.querydsl</groupId>
             <artifactId>querydsl-apt</artifactId>
         </dependency>
+        <dependency>
+            <groupId>com.clevertap.apns</groupId>
+            <artifactId>apns-http2</artifactId>
+            <version>1.0.5</version>
+        </dependency>
+
 
         <dependency>
             <groupId>io.micrometer</groupId>
