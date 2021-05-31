@@ -82,4 +82,9 @@ class OrderService(
         notificationService.addNotification(order.user,"Your order now is ${order.status}, check it now!","Your order has been ${order.status}",NotificationType.ORDER,order.id!!, order.orderDetails!!.first().product!!.medias!!.first().mediaPath)
         return order
     }
+
+    override fun getById(id: Long): Orders {
+        return orderRepository.findById(id).orElseThrow { DataNotFoundException("order","id",id.toString()) }
+    }
+
 }

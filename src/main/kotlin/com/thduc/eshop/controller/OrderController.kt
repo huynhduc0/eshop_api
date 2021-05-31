@@ -34,4 +34,8 @@ class OrderController(
             orderService.getUserOder(userPrincipal.currentUser!!, PageRequest.of(page, size, Sort.by(sortBy).descending()))
         else orderService.getUserOder(userPrincipal.currentUser!!, PageRequest.of(page, size, Sort.by(sortBy)))
     }
+    @GetMapping("{id}")
+    fun getOrder(@PathVariable id:Long): Orders{
+        return orderService.getById(id)
+    }
 }
