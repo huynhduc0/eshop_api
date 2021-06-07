@@ -5,6 +5,7 @@ import com.stripe.exception.AuthenticationException
 import com.stripe.exception.CardException
 import com.stripe.exception.InvalidRequestException
 import com.stripe.model.Charge
+import com.thduc.eshop.exception.BadRequestException
 import com.thduc.eshop.request.ChargeRequest
 import org.springframework.beans.factory.annotation.Value
 import org.springframework.stereotype.Service
@@ -16,7 +17,7 @@ import javax.annotation.PostConstruct
 class StripeService(
 
 ) {
-    @Value("\${stripe.api.published-key}")
+    @Value("\${stripe.api.private-key}")
     lateinit var stripePublishedApi: String
 
     @PostConstruct
@@ -30,11 +31,15 @@ class StripeService(
         CardException::class,
     )
     fun charge(chargeRequest: ChargeRequest): Charge? {
-        val chargeParams: MutableMap<String, Any> = HashMap()
-        chargeParams["amount"] = chargeRequest.amount as Any
-        chargeParams["currency"] = chargeRequest.currency as Any
-        chargeParams["description"] = chargeRequest.description as Any
-        chargeParams["source"] = chargeRequest.stripeToken as Any
-        return Charge.create(chargeParams)
+        try {
+            val chargeParams: MutableMap<String, Any> = HashMap()
+            chargeParams["amount"] = chargeRequest.amount as Any
+            chargeParams["currency"] = "USD"
+            chargeParams["description"] = chargeRequest.description as Any
+            chargeParams["source"] = chargeRequest.stripeToken as Any
+            return Charge.create(chargeParams)
+        }catch (e:Exception){
+            throw BadRequestException(e.message.toString())
+        }
     }
 }

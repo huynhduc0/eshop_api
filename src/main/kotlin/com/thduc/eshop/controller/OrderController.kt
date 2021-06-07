@@ -3,9 +3,12 @@ package com.thduc.eshop.controller
 import com.thduc.eshop.annotation.ActiveUser
 import com.thduc.eshop.annotation.LogExecution
 import com.thduc.eshop.entity.Orders
+import com.thduc.eshop.exception.BadRequestException
+import com.thduc.eshop.request.ChargeRequest
 import com.thduc.eshop.request.OrderForm
 import com.thduc.eshop.request.UserPrincipal
 import com.thduc.eshop.service.OrderService
+import com.thduc.eshop.thirdPartyService.StripeService
 import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.data.domain.Page
 import org.springframework.data.domain.PageRequest
@@ -16,13 +19,16 @@ import javax.transaction.Transactional
 @RequestMapping("order")
 @RestController
 class OrderController(
-    @Autowired val orderService: OrderService
+    @Autowired val orderService: OrderService,
+    @Autowired val stripeService: StripeService
 ) {
     @PostMapping
     @Transactional
     @LogExecution
     fun createOrder(@RequestBody orderForm: OrderForm ,@ActiveUser userPrincipal: UserPrincipal): Orders {
-        return orderService.createOrder(userPrincipal.currentUser!!,orderForm)
+        if(stripeService.charge(ChargeRequest("new order",orderForm.fee!!.toInt() *100, userPrincipal.currentUser!!.email, orderForm.stripeToken)) != null)
+            return orderService.createOrder(userPrincipal.currentUser!!,orderForm)
+        else throw BadRequestException("can not purchase your order, cyka blyat")
     }
     @GetMapping
     fun getAllOrder(@ActiveUser userPrincipal: UserPrincipal,

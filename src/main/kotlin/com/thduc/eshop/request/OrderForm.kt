@@ -9,6 +9,7 @@ class OrderForm(
     var fee: Double? = 0.0,
     var total: Double?= 0.0,
     var shippingAddress: Address?,
+    var stripeToken:String
 ) {
 
 }
