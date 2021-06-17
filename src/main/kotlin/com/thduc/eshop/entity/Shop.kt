@@ -14,6 +14,8 @@ class Shop(
     var user: User? = null,
     var status: StatusType?= StatusType.ACTIVATE,
     @OneToOne
+    var image: Media? = null,
+    @OneToOne
     var card: Card? = null
 
 ) {

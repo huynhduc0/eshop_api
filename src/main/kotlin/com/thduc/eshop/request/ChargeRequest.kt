@@ -1,9 +1,5 @@
 package com.thduc.eshop.request
 
-enum class Currency {
-    EUR, USD
-}
-
 class ChargeRequest(
      val description: String? = null,
      val amount: Int? = 0,
