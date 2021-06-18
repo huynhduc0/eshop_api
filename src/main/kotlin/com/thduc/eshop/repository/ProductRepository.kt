@@ -21,7 +21,7 @@ interface ProductRepository: PagingAndSortingRepository<Product, Long> {
     fun findAllByNameContainingOrShop_NameContaining(name:String,sName:String,pageable: Pageable):Page<Product>
     fun findAllByStatusAndShop_Id(statusType: StatusType, shopId: Long ,pageable: Pageable): Page<Product>
     fun findAllByCategoriesContainsAndShop_Id(category: Category,shopId: Long,pageable: Pageable):Page<Product>
-    fun findAllByCategoriesContainsAndNameContainingAndShop_Id(category: Category,name:String,sName:String,pageable: Pageable):Page<Product>
+    fun findAllByCategoriesContainsAndNameContainingAndShop_Id(category: Category,name:String,shopId: Long,pageable: Pageable):Page<Product>
     fun findAllByNameContainingAndShop_Id(name:String,shopId: Long,pageable: Pageable):Page<Product>
 
     @Query("SELECT DISTINCT p.* FROM product as p LEFT JOIN (SELECT * FROM recommend where user_id = :id ) as r " +

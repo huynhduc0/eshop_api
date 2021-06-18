@@ -27,14 +27,14 @@ class ProductService(
     }
 
     override fun loadProductByUser(user: User, pageable: Pageable, categoryId: String, search: String, shopId:String): Page<Product> {
-        return if (categoryId != "")
+        return if (shopId != "")
             if(search =="") productRepository.findAllByCategoriesContainsAndShop_Id(categoryService.getCategory(categoryId.toLong()),categoryId.toLong(),pageable)
-            else productRepository.findAllByCategoriesContainsAndNameContainingAndShop_Id(categoryService.getCategory(categoryId.toLong()),search,search,pageable)
+            else productRepository.findAllByCategoriesContainsAndNameContainingAndShop_Id(categoryService.getCategory(categoryId.toLong()),search,shopId.toLong(),pageable)
         else if(search =="") productRepository.findAllByCategoriesContains(categoryService.getCategory(categoryId.toLong()),pageable)
         else productRepository.findAllByCategoriesContainsAndNameContainingOrShop_NameContaining(categoryService.getCategory(categoryId.toLong()),search,search,pageable)
     }
 
-    override fun loadProductByUser(currentUser: User, pageable: Pageable, search: String, shopId: String): Page<Product> {
+    override fun loadProductByUser(user: User, pageable: Pageable, search: String, shopId: String): Page<Product> {
         return if (shopId!="")
             if(search =="") productRepository.findAllByStatusAndShop_Id(StatusType.ACTIVATE,shopId.toLong(),pageable)
             else productRepository.findAllByNameContainingAndShop_Id(search,shopId.toLong(),pageable)
