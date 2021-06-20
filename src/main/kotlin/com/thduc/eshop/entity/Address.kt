@@ -10,7 +10,7 @@ data class Address (
     var lat: Float? = null,
     var lon: Float? = null,
     var status: StatusType? = StatusType.ACTIVATE,
-    var country:String? = null,
+    var phoneNumber:String? = null,
     var postcode:String? = null,
     var street:String?=null,
     var city:String? = null,
