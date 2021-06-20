@@ -39,8 +39,8 @@ class OrderController(
                     @RequestParam(value = "success", defaultValue = "false") success: String,
                     @RequestParam(value = "sortOrder", defaultValue = "") sortOrder: String): Page<Orders> {
         return if (sortOrder == "desc")
-            orderService.getUserOder(userPrincipal.currentUser!!, if (success == "true") StatusType.ACTIVATE else null, PageRequest.of(page, size, Sort.by(sortBy).descending()))
-        else orderService.getUserOder(userPrincipal.currentUser!!,  if (success == "true") StatusType.ACTIVATE else null, PageRequest.of(page, size, Sort.by(sortBy)))
+            orderService.getUserOder(userPrincipal.currentUser!!, if (success == "true") StatusType.FINISH else null, PageRequest.of(page, size, Sort.by(sortBy).descending()))
+        else orderService.getUserOder(userPrincipal.currentUser!!,  if (success == "true") StatusType.FINISH else null, PageRequest.of(page, size, Sort.by(sortBy)))
     }
     @GetMapping("{id}")
     fun getOrder(@PathVariable id:Long): Orders{
