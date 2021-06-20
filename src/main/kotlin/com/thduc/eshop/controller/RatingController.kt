@@ -22,7 +22,6 @@ class RatingController(
     @Autowired val ratingService: RatingService
 ) {
     @PostMapping
-    @LogExecution
     @Transactional
     fun addRating(@ActiveUser userPrincipal: UserPrincipal, ratingForm:RatingForm): SuccessActionResponse {
         return SuccessActionResponse("Rating",ratingService.addRating(userPrincipal.currentUser,ratingForm))
