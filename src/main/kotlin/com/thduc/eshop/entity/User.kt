@@ -13,6 +13,7 @@ data class User(
     var fullname: String?,
     @JsonIgnore
     var password: String? = null,
+    @Column(unique = true)
     var socialId: String? = null,
     var phoneNumber: String? = null,
     var gender: GenderType? = GenderType.HIDE,
