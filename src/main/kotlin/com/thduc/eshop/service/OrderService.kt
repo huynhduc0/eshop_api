@@ -27,7 +27,7 @@ class OrderService(
         return orderRepository.findAllByShop_User(user,of)
     }
     fun getUserOder(user: User,statusType: StatusType?, of: PageRequest):Page<Orders>{
-        return if (statusType != null) orderRepository.findAllByUser(user,of)
+        return if (statusType == null) orderRepository.findAllByUser(user,of)
         else orderRepository.findAllByUserAndStatus(user, statusType!!, of)
     }
     fun createOrder(user: User, orderForm: OrderForm): Orders {
