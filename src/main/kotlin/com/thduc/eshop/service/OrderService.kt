@@ -1,6 +1,7 @@
 package com.thduc.eshop.service
 
 import com.thduc.eshop.constant.NotificationType
+import com.thduc.eshop.constant.StatusType
 import com.thduc.eshop.entity.*
 import com.thduc.eshop.exception.BadRequestException
 import com.thduc.eshop.exception.DataNotFoundException
@@ -25,8 +26,9 @@ class OrderService(
     fun getMerchantOder(user: User, of: PageRequest):Page<Orders>{
         return orderRepository.findAllByShop_User(user,of)
     }
-    fun getUserOder(user: User, of: PageRequest):Page<Orders>{
-        return orderRepository.findAllByUser(user,of)
+    fun getUserOder(user: User,statusType: StatusType?, of: PageRequest):Page<Orders>{
+        return if (statusType != null) orderRepository.findAllByUser(user,of)
+        else orderRepository.findAllByUserAndStatus(user, statusType!!, of)
     }
     fun createOrder(user: User, orderForm: OrderForm): Orders {
         orderForm.orderDetails!!.forEach {

@@ -2,6 +2,7 @@ package com.thduc.eshop.controller
 
 import com.thduc.eshop.annotation.ActiveUser
 import com.thduc.eshop.annotation.LogExecution
+import com.thduc.eshop.constant.StatusType
 import com.thduc.eshop.entity.Orders
 import com.thduc.eshop.exception.BadRequestException
 import com.thduc.eshop.request.ChargeRequest
@@ -35,10 +36,11 @@ class OrderController(
                     @RequestParam(value = "page", defaultValue = "0") page: Int,
                     @RequestParam(value = "size", defaultValue = "10") size: Int,
                     @RequestParam(value = "sortBy", defaultValue = "id") sortBy: String,
+                    @RequestParam(value = "success", defaultValue = "false") success: String,
                     @RequestParam(value = "sortOrder", defaultValue = "") sortOrder: String): Page<Orders> {
         return if (sortOrder == "desc")
-            orderService.getUserOder(userPrincipal.currentUser!!, PageRequest.of(page, size, Sort.by(sortBy).descending()))
-        else orderService.getUserOder(userPrincipal.currentUser!!, PageRequest.of(page, size, Sort.by(sortBy)))
+            orderService.getUserOder(userPrincipal.currentUser!!, if (success == "true") StatusType.ACTIVATE else null, PageRequest.of(page, size, Sort.by(sortBy).descending()))
+        else orderService.getUserOder(userPrincipal.currentUser!!,  if (success == "true") StatusType.ACTIVATE else null, PageRequest.of(page, size, Sort.by(sortBy)))
     }
     @GetMapping("{id}")
     fun getOrder(@PathVariable id:Long): Orders{
