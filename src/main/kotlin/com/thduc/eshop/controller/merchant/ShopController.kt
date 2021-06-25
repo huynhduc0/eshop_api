@@ -8,7 +8,6 @@ import com.thduc.eshop.request.UserPrincipal
 import com.thduc.eshop.service.ShopService
 import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.security.access.prepost.PreAuthorize
-import org.springframework.security.core.userdetails.UserDetails
 import org.springframework.web.bind.annotation.*
 
 @RestController
@@ -19,8 +18,7 @@ class ShopController(
 ) {
     @GetMapping
     fun getMyShop(@ActiveUser userPrincipal: UserPrincipal): Shop? {
-        val shop = shopService.findShopByUser(userPrincipal.currentUser)
-        return if (shop == null) shop else throw DataNotFoundException("shop","shop",userPrincipal.username)
+        return shopService.findShopByUser(userPrincipal.currentUser)
     }
     @GetMapping("{id}")
     fun getById(@PathVariable id:String, @ActiveUser userPrincipal: UserPrincipal): Shop? {
