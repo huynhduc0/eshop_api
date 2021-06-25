@@ -24,7 +24,7 @@ class ShopService(
 
     fun saveShop(user: User, shop: Shop): Shop {
         val currentShop: Shop = if (shopRepository.findTopByUser(user) != null)
-            shop else shop
+            shopRepository.findTopByUser(user) else shop
         currentShop.mainAddress!!.user = user
         currentShop.user = user
         return shopRepository.save(currentShop)
