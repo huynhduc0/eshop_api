@@ -33,7 +33,7 @@ class MerchantOrderController(
         else orderService.getMerchantOder(userPrincipal.currentUser!!, PageRequest.of(page, size, Sort.by(sortBy)))
     }
 
-    @PutMapping
+    @PutMapping("{id}")
     fun updateStatus(
         @ActiveUser userPrincipal: UserPrincipal,
         @RequestBody orders: Orders,
