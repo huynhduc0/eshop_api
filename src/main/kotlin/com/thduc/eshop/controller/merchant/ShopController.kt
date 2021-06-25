@@ -3,6 +3,7 @@ package com.thduc.eshop.controller.merchant
 import com.thduc.eshop.annotation.ActiveUser
 import com.thduc.eshop.entity.Shop
 import com.thduc.eshop.exception.DataNotFoundException
+import com.thduc.eshop.repository.ShopRepository
 import com.thduc.eshop.request.SuccessActionResponse
 import com.thduc.eshop.request.UserPrincipal
 import com.thduc.eshop.service.ShopService
@@ -38,5 +39,8 @@ class ShopController(
     fun deleteShop(@ActiveUser userPrincipal: UserPrincipal): SuccessActionResponse{
         return shopService.deleteShop(userPrincipal.currentUser!!)
     }
-
+    @GetMapping("summary")
+    fun getSum(@ActiveUser userPrincipal: UserPrincipal):List<ShopRepository.Summary>{
+        return shopService.summary(userPrincipal.currentUser)
+    }
 }

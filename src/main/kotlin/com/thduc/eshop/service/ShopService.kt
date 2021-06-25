@@ -3,6 +3,7 @@ package com.thduc.eshop.service
 import com.thduc.eshop.entity.Shop
 import com.thduc.eshop.entity.User
 import com.thduc.eshop.exception.DataNotFoundException
+import com.thduc.eshop.repository.RoleRepository
 import com.thduc.eshop.repository.ShopRepository
 import com.thduc.eshop.request.SuccessActionResponse
 import com.thduc.eshop.service.ServiceImpl.ShopServiceImpl
@@ -13,7 +14,8 @@ import org.springframework.stereotype.Service
 
 @Service
 class ShopService(
-    @Autowired val shopRepository: ShopRepository
+    @Autowired val shopRepository: ShopRepository,
+    @Autowired val roleRepository: RoleRepository
 ) : ShopServiceImpl {
     fun findShopByUser(user: User?): Shop {
         return shopRepository.findTopByUser(user!!)
@@ -38,5 +40,11 @@ class ShopService(
 
     fun getAllShop(currentUser: User, of: PageRequest): Page<Shop> {
         return shopRepository.findAll(of)
+    }
+
+    override fun summary(currentUser: User?):List<ShopRepository.Summary> {
+        return if ((currentUser!!.roles!!.count()>2)) shopRepository.getSummary()
+        else  shopRepository.getSummary(currentUser.id!!)
+
     }
 }
