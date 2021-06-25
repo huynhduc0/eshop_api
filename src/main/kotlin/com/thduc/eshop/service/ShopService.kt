@@ -23,7 +23,7 @@ class ShopService(
     }
 
     fun saveShop(user: User, shop: Shop): Shop {
-        val currentShop: Shop = if (shop.name != null)
+        val currentShop: Shop = if (shopRepository.findTopByUser(user) != null)
             shop else shop
         currentShop.mainAddress!!.user = user
         currentShop.user = user
