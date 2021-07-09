@@ -1,4 +1,4 @@
-# eshop_api
+# eshop api
 Project on going construct
 
 A API backend project using Spring Boot with kotlin, jpa
